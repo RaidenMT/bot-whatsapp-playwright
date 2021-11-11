@@ -5,16 +5,19 @@ const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
 };
 
-const contact = "+591 78002780";
-const message = "Hola Raiden, es un mensaje de prueba desde playwright";
+// const contact = "+591 78002780";
+// const message = "Hola Raiden, es un mensaje de prueba desde playwright";
 
 
 // https://ichi.pro/es/cree-una-api-para-enviar-y-recibir-mensajes-de-whatsapp-37877962075126
-(async () => {
+// (async () => {
+let sendMessage = async function(contact, message) {    
     const browser = await chromium.launch({ headless: false });
+    // https://playwright.dev/docs/auth/
     // const context = await browser.newContext();
+    const context = await browser.newContext({ storageState: 'state.json' });
 
-    const page = await browser.newPage();
+    const page = await context.newPage();
     await page.goto(whatsappUrl);
 
     await page.waitForSelector('._1Jn3C div[role="textbox"]');
@@ -50,8 +53,15 @@ const message = "Hola Raiden, es un mensaje de prueba desde playwright";
     await page.type('div.nBIOd div[role="textbox"]', message);
 
     await page.click('span[data-icon="send"]');
-
+    // await context.storageState({ path: 'state.json' });
     await sleep(500000);
 
     await browser.close();
-})();
+// })();
+}
+
+
+
+// const contact = "+591 78002780";
+// const message = "Hola Raiden, es un mensaje de prueba desde playwright";
+sendMessage("+591 78002780", "Hola Raiden, es un mensaje de prueba desde playwright");
